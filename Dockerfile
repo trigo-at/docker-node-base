@@ -18,6 +18,8 @@ ONBUILD RUN yarn install
 
 ONBUILD ADD . /app
 
+ENV NPM_TOKEN dummy
+
 EXPOSE 3000
 
 CMD ["npm", "start"]
