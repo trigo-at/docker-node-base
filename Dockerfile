@@ -1,4 +1,4 @@
-FROM node:7.4-slim
+FROM node:7.5-slim
 
 RUN apt-get update && \
    apt-get install -y apt-transport-https && \
@@ -17,8 +17,6 @@ ONBUILD ADD yarn.lock .
 ONBUILD RUN yarn install
 
 ONBUILD ADD . /app
-
-ENV NPM_TOKEN dummy
 
 EXPOSE 3000
 
