@@ -18,6 +18,8 @@ ONBUILD RUN yarn install
 
 ONBUILD ADD . /app
 
+ONBUILD RUN rm /root/.npmrc
+
 EXPOSE 3000
 
 CMD ["npm", "start"]
