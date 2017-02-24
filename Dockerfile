@@ -1,4 +1,4 @@
-FROM node:7.5-slim
+FROM node:7.6-slim
 
 RUN apt-get update && \
    apt-get install -y apt-transport-https && \
