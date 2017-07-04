@@ -9,6 +9,7 @@ RUN apt-get update && \
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
+ADD npmrc /app/.npmrc
 
 WORKDIR /app
 
