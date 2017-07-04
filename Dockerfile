@@ -7,6 +7,8 @@ RUN apt-get update && \
    apt-get update &&  \
    apt-get install -y git yarn
 
+RUN rm /usr/local/bin/yarn
+
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
