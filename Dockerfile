@@ -7,9 +7,6 @@ RUN apt-get update && \
    apt-get update &&  \
    apt-get install -y git yarn
 
-ONBUILD ARG NPM_TOKEN
-ADD npmrc /root/.npmrc
-
 WORKDIR /app
 
 ONBUILD ADD package.json .
