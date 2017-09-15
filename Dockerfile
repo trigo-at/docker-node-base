@@ -1,4 +1,4 @@
-FROM node:8.1-slim
+FROM node:8.5-slim
 
 RUN apt-get update && \
    apt-get install -y apt-transport-https && \
