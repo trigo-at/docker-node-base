@@ -1,4 +1,4 @@
-FROM node:9.1-slim
+FROM node:9-slim
 
 RUN apt-get update && \
    apt-get install -y apt-transport-https && \
