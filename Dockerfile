@@ -1,7 +1,7 @@
 # ----* Dependencies *---
 FROM node:9.11.1-slim AS dependencies
 
-RUN apt-get update -yqq && apt-get install -yqq git
+ONBUILD RUN apt-get update -yqq && apt-get install -yqq git
 
 ONBUILD ARG NPM_TOKEN
 ONBUILD ADD npmrc /root/.npmrc
