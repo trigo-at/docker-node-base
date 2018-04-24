@@ -8,7 +8,7 @@ ADD npmrc /root/.npmrc
 
 WORKDIR /app
 
-ADD package.json .
+ONBUILD ADD package.json .
 ONBUILD ADD yarn.lock .
 
 ONBUILD RUN yarn install --no-cache --frozen-lockfile --production
