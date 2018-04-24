@@ -17,13 +17,3 @@ ONBUILD RUN cp -R node_modules node_modules_production
 ONBUILD ADD . /app
 
 ONBUILD RUN rm /root/.npmrc
-
-# ----* Production *----
-FROM dependencies AS production
-
-COPY --from=dependencies /app .
-COPY --from=dependencies /node_modules_production ./node_modules
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
