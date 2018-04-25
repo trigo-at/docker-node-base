@@ -12,7 +12,6 @@ ONBUILD ADD package.json .
 ONBUILD ADD yarn.lock .
 
 ONBUILD RUN yarn install --no-cache --frozen-lockfile --production
-ONBUILD RUN cp -R node_modules node_modules_production
 
 ONBUILD ADD . /app
 
