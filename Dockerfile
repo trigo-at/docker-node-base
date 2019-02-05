@@ -1,13 +1,6 @@
-FROM node:11.3.0-slim
+FROM node:11.9.0-slim
 
-RUN apt-get update && \
-   apt-get install -y apt-transport-https && \
-   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-   echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list && \
-   apt-get update &&  \
-   apt-get install -y git yarn
-
-RUN rm /usr/local/bin/yarn
+RUN apt-get update
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
@@ -16,8 +9,8 @@ ADD npmrc /app/.npmrc
 WORKDIR /app
 
 ONBUILD ADD package.json .
-ONBUILD ADD yarn.lock .
-ONBUILD RUN yarn install
+ONBUILD ADD package-lock.json .
+ONBUILD RUN npm install
 
 ONBUILD ADD . /app
 
