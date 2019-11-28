@@ -1,2 +1,4 @@
-//registry.3sit.at/repository/gems/:_authToken=${NPM_TOKEN}
 always-auth=true
+registry=https://registry.3sit.at/repository/gems
+_auth=${NPM_TOKEN}
+email=builder@3sit.at
