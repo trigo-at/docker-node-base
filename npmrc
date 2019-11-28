@@ -1,1 +1,2 @@
 //registry.3sit.at/repository/gems/:_authToken=${NPM_TOKEN}
+always-auth=true
