@@ -1,4 +1,4 @@
-FROM node:13.3.0-slim
+FROM node:13.7.0-slim
 
 RUN apt-get update
 
