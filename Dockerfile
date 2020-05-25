@@ -21,7 +21,7 @@ RUN set -x ; \
 
 RUN adduser --home=/opt/libreoffice --disabled-password --gecos "" --shell=/bin/bash libreoffice
 
-ADD sofficerc /etc/libreoffice/sofficerc
+ONBUILD ADD sofficerc /etc/libreoffice/sofficerc
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
