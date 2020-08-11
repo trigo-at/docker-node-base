@@ -1,17 +1,18 @@
-FROM node:6-slim
+FROM node:14.7.0-slim
 
-RUN apt-get update -yqq && apt-get install -yqq git
+RUN apt-get update
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
+ADD npmrc /app/.npmrc
 
 WORKDIR /app
 
 ONBUILD ADD package.json .
+ONBUILD ADD package-lock.json .
 ONBUILD RUN npm install
-ONBUILD ADD . /app
 
-ONBUILD RUN rm /root/.npmrc
+ONBUILD ADD . /app
 
 EXPOSE 3000
 
