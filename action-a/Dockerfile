@@ -1,0 +1,7 @@
+
+name: "Testrun"
+description: "run docker node base"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
