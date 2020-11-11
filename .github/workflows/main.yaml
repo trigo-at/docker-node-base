@@ -1,8 +1,8 @@
 name: Publish Docker image
 on:
-  push:
+  push: 
     branches: master
-    
+
 jobs:
   push_to_registry:
     name: Push Docker image to GitHub Packages
@@ -10,11 +10,10 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: trigo-at/docker-node-base/docker-node-image
-          tag_with_ref: true
+      - name: Moving build to artifacts directory
+        run: chmod +x ./action-a/ghcr-upload.sh
+      - name: Deploy Release image to GitHub Container Registry
+        env: 
+          TRIGO_PACKAGE_ACCESS_TOKEN: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
+        shell: bash
+        run: ./ghcr-upload.sh
