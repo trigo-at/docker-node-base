@@ -1,27 +1,13 @@
 name: ci
-on:
-  push:
-    branches:
-      - '**'
-    tags:
-      - 'v*.*.*'
-  pull_request:
-
+on: [push, workflow_dispatch]
 
 jobs:
-  build_and_push_image:
+  multi-registries:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-       -
-        name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
-        with:
-          images: name/app # list of Docker images to use as base name for tags
-          tag-sha: true # add git short SHA as Docker tag       
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -34,7 +20,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
+          password: ${{ secrets.CR_PAT }}
       - 
         name: Set output
         id: vars
@@ -47,5 +33,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/386
           push: true
-          tags: ${{ github.repository_owner }}/node-base:${{ steps.vars.outputs.short_ref }}
-        
+          tags: |
+            ghcr.io/trigo-at/docker-node-base:${{ steps.vars.outputs.short_ref }}
