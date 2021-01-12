@@ -29,5 +29,6 @@ jobs:
           file: ./Dockerfile
           platforms: linux/386
           push: true
-          tags: |
-            ghcr.io/trigo-at/docker-node-base:github-actions-docker
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+        
