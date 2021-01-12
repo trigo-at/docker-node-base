@@ -22,12 +22,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
-      - 
-        name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
       -
         name: Build and push
         uses: docker/build-push-action@v2
@@ -37,8 +31,7 @@ jobs:
           platforms: linux/386
           push: true
           tags: |
-            ghcr.io/trigo-at/docker-node-base:${{ steps.extract_branch.outputs.branch }}
-
+            ghcr.io/trigo-at/docker-node-base:${{ github.head_ref }}
 
 
 # name: Publish Docker image
