@@ -1,5 +1,12 @@
 name: ci
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+
 
 jobs:
   build_and_push_image:
@@ -8,6 +15,13 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+       -
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: name/app # list of Docker images to use as base name for tags
+          tag-sha: true # add git short SHA as Docker tag       
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -21,6 +35,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
+      - 
+        name: Set output
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       -
         name: Build and push
         uses: docker/build-push-action@v2
@@ -29,6 +47,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/386
           push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          tags: ${{ github.repository_owner }}/node-base:${{ steps.vars.outputs.short_ref }}
         
