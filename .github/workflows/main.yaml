@@ -1,9 +1,8 @@
-
 name: ci
 on: [push, workflow_dispatch]
 
 jobs:
-  build_and_push_image:
+  build-image-and-push-to-ghcr:
     runs-on: ubuntu-latest
     steps:
       -
@@ -22,8 +21,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
+      - 
+        name: Set Branch Name
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       -
-        name: Build and push
+        name: Build image and push to ghcr
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -31,23 +34,4 @@ jobs:
           platforms: linux/386
           push: true
           tags: |
-            ghcr.io/trigo-at/docker-node-base:${{ github.head_ref }}
-
-
-# name: Publish Docker image
-# on: [push, workflow_dispatch]
-
-# jobs:
-#   push_to_registry:
-#     name: Push Docker image to GitHub Packages
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check out the repo
-#         uses: actions/checkout@v2
-#       - name: Moving build to artifacts directory
-#         run: chmod +x ./ghcr-upload.sh
-#       - name: Deploy Release image to GitHub Container Registry
-#         env: 
-#           TRIGO_PACKAGE_ACCESS_TOKEN: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
-#         shell: bash
-#         run: ./ghcr-upload.sh
+            ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}
