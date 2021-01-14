@@ -5,15 +5,6 @@ jobs:
   build-image-and-push-to-ghcr:
     runs-on: ubuntu-latest
     steps:
-      - 
-        name: Send Slack Notification
-        uses: act10ns/slack@v1
-        with: 
-          status: ${{ job.status }}
-          steps: ${{ toJson(steps) }}
-        env: 
-         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-        if: always()
       -
         name: Checkout
         id: checkout
@@ -49,3 +40,12 @@ jobs:
           push: true
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}
+      - 
+        name: Send Slack Notification
+        uses: act10ns/slack@v1
+        with: 
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        env: 
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
