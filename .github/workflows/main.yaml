@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/386
+          platforms: linux/amd64
           push: true
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}
