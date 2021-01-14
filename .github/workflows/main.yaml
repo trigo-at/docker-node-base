@@ -35,3 +35,11 @@ jobs:
           push: true
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}
+      - 
+        name: Send Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env: 
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+         SLACK_MESSAGE: 'Testing Github Actions'
+
+       
