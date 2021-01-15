@@ -7,15 +7,19 @@ jobs:
     steps:
       -
         name: Checkout
+        id: checkout
         uses: actions/checkout@v2
       -
         name: Set up QEMU
+        id: set_up_QEMU
         uses: docker/setup-qemu-action@v1
       -
         name: Set up Docker Buildx
+        id: set_buildx
         uses: docker/setup-buildx-action@v1
       -
         name: Login to GitHub Container Registry
+        id: login_to_ghcr
         uses: docker/login-action@v1 
         with:
           registry: ghcr.io
@@ -27,6 +31,7 @@ jobs:
         run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       -
         name: Build image and push to ghcr
+        id: build_and_push
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -35,3 +40,12 @@ jobs:
           push: true
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}
+      - 
+        name: Send Slack Notification
+        uses: act10ns/slack@v1
+        with: 
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        env: 
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
