@@ -7,7 +7,7 @@ ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 ADD ./docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 WORKDIR /app
 
