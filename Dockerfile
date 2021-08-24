@@ -1,4 +1,4 @@
-FROM node:14.0.0-slim
+FROM node:16.7.0-slim
 
 ENV DEBIAN_FRONTEND noninteractive
 
