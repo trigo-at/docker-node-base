@@ -1,4 +1,4 @@
-FROM node:15.5.1-slim
+FROM node:16.7.0-slim
 
 RUN apt-get update
 
