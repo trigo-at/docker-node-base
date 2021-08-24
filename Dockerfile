@@ -9,10 +9,15 @@ RUN apt-get -qq update && \
 RUN mkdir -p /usr/share/man/man1
 
 RUN set -x ; \
-	apt-get update \
+    apt-get install -y wget \
+    && apt-get install -y gnupg2 \
+    && apt-get install -y software-properties-common \
+    && wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add - \
+    && add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ \
+    && apt-get update && apt-get install -y adoptopenjdk-8-hotspot \
 	&& apt-get -y -q install libreoffice libreoffice-writer \
     ure libreoffice-java-common libreoffice-core libreoffice-common \
-    openjdk-8-jre fonts-opensymbol hyphen-fr hyphen-de hyphen-en-us \
+    fonts-opensymbol hyphen-fr hyphen-de hyphen-en-us \
     hyphen-it hyphen-ru fonts-dejavu fonts-dejavu-core fonts-dejavu-extra \
     fonts-noto fonts-dustin fonts-f500 fonts-fanwood fonts-freefont-ttf \
     fonts-liberation fonts-lmodern fonts-lyx fonts-sil-gentium fonts-texgyre \
