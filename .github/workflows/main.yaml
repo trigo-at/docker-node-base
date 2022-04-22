@@ -48,7 +48,7 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ steps.vars.outputs.short_ref }}
-            FLAVOR=alpine
+            FLAVOR=slim
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}${{matrix.images.tag_suffix}}
       - 
