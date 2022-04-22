@@ -7,12 +7,7 @@ ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
 WORKDIR /app
-
-ONBUILD ADD package.json .
-ONBUILD ADD package-lock.json .
-ONBUILD RUN npm ci
-
-ONBUILD ADD . /app
+ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000
 

@@ -8,7 +8,9 @@ jobs:
       matrix:
         images: [
             { extension: "plain", tag_suffix: ""},
-            { extension: "libreoffice", tag_suffix: "-libreoffice" }
+            { extension: "libreoffice", tag_suffix: "-libreoffice" },
+            { extension: "builder", tag_suffix: "-builder" },
+            { extension: "runtime", tag_suffix: "-runtime" }
           ]
     steps:
       -
@@ -46,6 +48,7 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ steps.vars.outputs.short_ref }}
+            FLAVOR=alpine
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}${{matrix.images.tag_suffix}}
       - 
