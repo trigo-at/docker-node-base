@@ -1,5 +1,10 @@
 name: ci
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches-ignore:
+      - master
+      - main
+  workflow_dispatch:
 
 jobs:
   build-image-and-push-to-ghcr:
