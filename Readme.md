@@ -1,4 +1,4 @@
-# This readme is valid for Versions/Branches starting with node version 18.0.0
+# This readme is valid for Versions/Branches starting with node version 18.0.0 (incl. a backport to v17.1.0)
 
 # Node Base Images
 
