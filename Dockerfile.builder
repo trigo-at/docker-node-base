@@ -10,7 +10,7 @@ ONBUILD ADD package.json .
 ONBUILD ADD package-lock.json .
 ONBUILD RUN npm ci
 
-# ONBUILD ARG ENV
+ONBUILD ARG ENV
 
 ONBUILD ADD . /app
 ONBUILD RUN if [ -n "$ENV" ]; then cat .env.${ENV} > .env.local || true ; fi
