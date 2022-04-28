@@ -13,6 +13,6 @@ ONBUILD RUN npm ci
 ONBUILD ARG ENV
 
 ONBUILD ADD . /app
-ONBUILD RUN if [ -n "$ENV" ]; then cat .env.${ENV} > .env.local || true ; fi
+ONBUILD RUN if [ -n "$ENV" ]; then cat ./build-env/.env.${ENV} > .env.local || true ; fi
 ONBUILD RUN npm run build
 ONBUILD RUN npm prune --production --json
