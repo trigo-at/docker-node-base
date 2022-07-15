@@ -1,6 +1,6 @@
 ARG VERSION
 ARG FLAVOR
-FROM node:$VERSION-$FLAVOR
+FROM node:$VERSION
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
@@ -10,9 +10,6 @@ WORKDIR /app
 ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000
-
-ONBUILD RUN chown -R node:node .
-ONBUILD USER node
 
 CMD ["npm", "start"]
 
