@@ -1,13 +1,13 @@
 ARG VERSION
 ARG FLAVOR
-FROM node:$VERSION-$FLAVOR
+FROM node:18.4.0-slim
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
 WORKDIR /app
-ONBUILD COPY --from=builder /app .
+ONBUILD COPY --chown=node:node --from=builder /app .
 
 EXPOSE 3000
 
