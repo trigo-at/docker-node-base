@@ -11,6 +11,8 @@ ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000
 
+USER node
+
 CMD ["npm", "start"]
 
 # Build identifier base image build
