@@ -10,7 +10,7 @@ WORKDIR /app
 ONBUILD COPY --chown=node:node --from=builder /app .
 
 USER root
-RUN mkdir /.npm
+RUN mkdir /.npm && chmod 777 /.npm
 USER node
 
 EXPOSE 3000
