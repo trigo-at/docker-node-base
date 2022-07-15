@@ -11,7 +11,8 @@ ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000
 
-USER node
+ONBUILD RUN chown -R node:node .
+ONBUILD USER node
 
 CMD ["npm", "start"]
 
