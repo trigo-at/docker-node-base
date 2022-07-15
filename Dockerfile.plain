@@ -1,6 +1,6 @@
 ARG VERSION
 ARG FLAVOR
-FROM node:$VERSION-$FLAVOR
+FROM node:18.4.0-slim
 
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
