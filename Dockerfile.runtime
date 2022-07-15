@@ -9,6 +9,10 @@ ADD npmrc /app/.npmrc
 WORKDIR /app
 ONBUILD COPY --chown=node:node --from=builder /app .
 
+USER root
+RUN mkdir /.npm
+USER node
+
 EXPOSE 3000
 
 CMD ["npm", "start"]
