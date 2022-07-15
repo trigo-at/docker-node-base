@@ -12,8 +12,6 @@ jobs:
     strategy:
       matrix:
         images: [
-            { extension: "plain", tag_suffix: ""},
-            { extension: "libreoffice", tag_suffix: "-libreoffice" },
             { extension: "builder", tag_suffix: "-builder" },
             { extension: "runtime", tag_suffix: "-runtime" }
           ]
