@@ -21,3 +21,6 @@ FROM ghcr.io/trigo-at/node-base:{{VERSION}}-builder as builder
 FROM ghcr.io/trigo-at/node-base:{{VERSION}}-runtime
 ```
 This runs `npm ci` and `npm prune --production` in the builder image and copies over all of `/app` to the runtime image, uses `npm start` to run the app in the runtime image.
+
+# Custom npmrc
+If you need to use custom npmrc (eg. to access a private repo) put the file named `npmrc` on the same level as your dockerfile. The contends will be appended to the already existing npmrc in the base image.
