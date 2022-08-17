@@ -7,6 +7,8 @@ ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
 WORKDIR /app
+
+ONBUILD RUN if [ -f "./npmrc" ]; then cat ./npmrc >> /app/.npmrc && cat ./npmrc >> /root/.npmrc; fi
 ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000

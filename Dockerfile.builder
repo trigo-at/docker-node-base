@@ -10,6 +10,7 @@ ADD npmrc /app/.npmrc
 
 WORKDIR /app
 
+ONBUILD RUN if [ -f "./npmrc" ]; then cat ./npmrc >> /app/.npmrc && cat ./npmrc >> /root/.npmrc; fi
 ONBUILD ADD package.json .
 ONBUILD ADD package-lock.json .
 ONBUILD RUN npm ci
