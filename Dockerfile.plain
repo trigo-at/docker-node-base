@@ -6,6 +6,13 @@ ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
+# this is a workaroudn for a bug in npm > 8.6
+# https://github.com/npm/cli/issues/4769
+# https://github.com/npm/cli/issues/4996
+RUN mkdir /.npm && chmod 777 /.npm
+########################################
+
+ONBUILD USER root
 WORKDIR /app
 
 ONBUILD RUN if [ -f "./npmrc" ]; then cat ./npmrc >> /app/.npmrc && cat ./npmrc >> /root/.npmrc; fi
@@ -17,14 +24,7 @@ ONBUILD ADD . /app
 
 EXPOSE 3000
 
-# this is a workaroudn for a bug in npm > 8.6
-# https://github.com/npm/cli/issues/4769
-# https://github.com/npm/cli/issues/4996
-USER root
-RUN mkdir /.npm && chmod 777 /.npm
 USER node
-########################################
-
 CMD ["npm", "start"]
 
 # Build identifier base image build
