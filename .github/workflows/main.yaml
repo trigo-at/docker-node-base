@@ -42,7 +42,7 @@ jobs:
       - 
         name: Set Branch Name
         id: vars
-        run: echo name=short_ref::${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
+        run: echo short_ref=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
       -
         name: Build image and push to ghcr
         id: build_and_push
