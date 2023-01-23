@@ -15,7 +15,8 @@ jobs:
             { extension: "plain", tag_suffix: ""},
             { extension: "libreoffice", tag_suffix: "-libreoffice" },
             { extension: "builder", tag_suffix: "-builder" },
-            { extension: "runtime", tag_suffix: "-runtime" }
+            { extension: "runtime", tag_suffix: "-runtime" },
+            { extension: "runtime-openssh", tag_suffix: "-runtime-openssh" }
           ]
     steps:
       -

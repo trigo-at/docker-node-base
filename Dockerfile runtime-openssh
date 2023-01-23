@@ -1,0 +1,39 @@
+ARG VERSION
+ARG FLAVOR
+FROM node:$VERSION-$FLAVOR
+
+RUN apt update && apt install -y openssh-client
+
+ONBUILD ARG NPM_TOKEN
+ADD npmrc /root/.npmrc
+ADD npmrc /app/.npmrc
+
+WORKDIR /app
+ONBUILD COPY --from=builder /app .
+
+EXPOSE 3000
+
+# this is a workaroudn for a bug in npm > 8.6
+# https://github.com/npm/cli/issues/4769
+# https://github.com/npm/cli/issues/4996
+USER root
+RUN mkdir /.npm && chmod 777 /.npm
+USER node
+########################################
+
+CMD ["npm", "start"]
+
+# Build identifier base image build
+ARG GIT_COMMIT
+ARG BUILD_UUID
+
+LABEL "build_uuid"="${BUILD_UUID}"
+LABEL "git_commit"="${GIT_COMMIT}"
+
+# Build Identifier when used as base image
+ONBUILD ARG BUILD_UUID=00000
+ONBUILD ARG GIT_COMMIT=00000
+
+ONBUILD LABEL "build_uuid"="${BUILD_UUID}"
+ONBUILD LABEL "git_commit"="${GIT_COMMIT}"
+### END TEMPLATE ###
