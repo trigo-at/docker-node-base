@@ -2,17 +2,14 @@ ARG VERSION
 ARG FLAVOR
 FROM node:$VERSION-$FLAVOR
 
+RUN apt update && apt install -y openssh-client
+
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
 WORKDIR /app
-
-ONBUILD ADD package.json .
-ONBUILD ADD package-lock.json .
-ONBUILD RUN npm ci
-
-ONBUILD ADD . /app
+ONBUILD COPY --from=builder /app .
 
 EXPOSE 3000
 
