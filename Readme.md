@@ -7,6 +7,17 @@ Tag naming follows the official Node image tag names
 
 The upstream version is base on the branch name.
 
+# Environment Variablees
+
+Starting with nodejs version 19.4.0 images some environment variable are provided at runtime if injected with --build-arg when building images
+
+| NAME | Default Value | Explanation |
+|------|---------------|-------------|
+| GIT_COMMIT | 0000 | Short commit sha for the current build, eg. `ac45a459692d` |
+| BUILD_UUID | 0000 | Unique build identifier, if build by our jenkins pipeline eg. `jenkins-trigo-at-PROJECT_NAME-BRANCH_NAME-BUILD_NR` |
+| BUILD_TIME | 0000 | Timestamp of the build, if build by our jenkins pipeline the format is `YYYY-MM-DD'T'hh:mm:ssZ` eg. `2023-01-26T14:12:04Z` |
+
+
 # Usage
 ## Wihtout build step
 
