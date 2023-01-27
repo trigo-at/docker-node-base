@@ -7,7 +7,7 @@ Tag naming follows the official Node image tag names
 
 The upstream version is base on the branch name.
 
-# Environment Variablees
+# Environment Variables
 
 Starting with nodejs version 19.4.0 images some environment variable are provided at runtime if injected with --build-arg when building images
 
