@@ -8,11 +8,13 @@ ADD npmrc /app/.npmrc
 
 WORKDIR /app
 
+ONBUILD USER root
 ONBUILD ADD package.json .
 ONBUILD ADD package-lock.json .
 ONBUILD RUN npm ci
 
 ONBUILD ADD . /app
+ONBUILD USER node
 
 EXPOSE 3000
 
