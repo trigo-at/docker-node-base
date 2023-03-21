@@ -11,57 +11,51 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        images: [
-            { extension: "plain", tag_suffix: ""},
+        images:
+          [
+            { extension: "plain", tag_suffix: "" },
             { extension: "builder", tag_suffix: "-builder" },
             { extension: "runtime", tag_suffix: "-runtime" },
-            { extension: "runtime-openssh", tag_suffix: "-runtime-openssh" }
+            { extension: "runtime-openssh", tag_suffix: "-runtime-openssh" },
           ]
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         id: checkout
         uses: actions/checkout@v3
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         id: set_up_QEMU
         uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         id: set_buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         id: login_to_ghcr
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TRIGO_PACKAGE_ACCESS_TOKEN }}
-      - 
-        name: Set Branch Name
+      - name: Set Branch Name
         id: vars
         run: echo short_ref=${GITHUB_REF#refs/*/} >> $GITHUB_OUTPUT
-      -
-        name: Build image and push to ghcr
+      - name: Build image and push to ghcr
         id: build_and_push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile.${{matrix.images.extension}}
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           build-args: |
             VERSION=${{ steps.vars.outputs.short_ref }}
             FLAVOR=slim
           tags: |
             ghcr.io/trigo-at/node-base:${{ steps.vars.outputs.short_ref }}${{matrix.images.tag_suffix}}
-      - 
-        name: Send Slack Notification
+      - name: Send Slack Notification
         uses: act10ns/slack@v2
-        with: 
+        with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-        env: 
-         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: always()
