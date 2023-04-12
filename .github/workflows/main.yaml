@@ -17,6 +17,8 @@ jobs:
             { extension: "builder", tag_suffix: "-builder" },
             { extension: "runtime", tag_suffix: "-runtime" },
             { extension: "runtime-openssh", tag_suffix: "-runtime-openssh" },
+            { extension: "pnpm-builder", tag_suffix: "-pnpm-builder" },
+            { extension: "pnpm-runtime", tag_suffix: "-pnpm-runtime" },
           ]
     steps:
       - name: Checkout

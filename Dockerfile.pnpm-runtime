@@ -1,0 +1,47 @@
+ARG VERSION
+ARG FLAVOR
+FROM node:$VERSION-$FLAVOR
+
+RUN npm install -g pnpm
+
+ONBUILD ARG NPM_TOKEN
+ADD npmrc /root/.npmrc
+ADD npmrc /app/.npmrc
+
+WORKDIR /app
+ONBUILD COPY --from=builder /app .
+
+EXPOSE 3000
+
+# this is a workaroudn for a bug in npm > 8.6
+# https://github.com/npm/cli/issues/4769
+# https://github.com/npm/cli/issues/4996
+USER root
+RUN mkdir /.npm && chmod 777 /.npm
+USER node
+########################################
+
+CMD ["pnpm", "start"]
+
+# Build identifier base image build
+ARG GIT_COMMIT
+ARG BUILD_UUID
+ARG BUILD_TIME
+
+LABEL "build_uuid"="${BUILD_UUID}"
+LABEL "build_time"="${BUILD_TIME}"
+LABEL "git_commit"="${GIT_COMMIT}"
+
+# Build Identifier when used as base image
+ONBUILD ARG BUILD_UUID=00000
+ONBUILD ARG BUILD_TIME=00000
+ONBUILD ARG GIT_COMMIT=00000
+
+ONBUILD LABEL "build_uuid"="${BUILD_UUID}"
+ONBUILD LABEL "build_time"="${BUILD_TIME}"
+ONBUILD LABEL "git_commit"="${GIT_COMMIT}"
+
+ONBUILD ENV GIT_COMMIT=$GIT_COMMIT
+ONBUILD ENV BUILD_UUID=$BUILD_UUID
+ONBUILD ENV BUILD_TIME=$BUILD_TIME
+### END TEMPLATE ###

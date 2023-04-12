@@ -1,0 +1,22 @@
+ARG VERSION
+ARG FLAVOR
+FROM node:$VERSION-$FLAVOR
+
+# RUN apt-get update
+
+RUN npm install -g pnpm
+
+ONBUILD ARG NPM_TOKEN
+ADD npmrc /root/.npmrc
+ADD npmrc /app/.npmrc
+
+WORKDIR /app
+
+ONBUILD ADD package.json .
+ONBUILD ADD pnpm-lock.yaml .
+
+ONBUILD RUN pnpm install --frozen-lockfile
+
+ONBUILD ADD . /app
+ONBUILD RUN pnpm build
+ONBUILD RUN pnpm prune --prod
