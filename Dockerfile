@@ -6,6 +6,7 @@ ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
 
+RUN mkdir /.npm && chmod 777 /.npm
 WORKDIR /app
 
 ONBUILD ADD package.json .
