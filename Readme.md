@@ -32,3 +32,13 @@ FROM ghcr.io/trigo-at/node-base:{{VERSION}}-builder as builder
 FROM ghcr.io/trigo-at/node-base:{{VERSION}}-runtime
 ```
 This runs `npm ci` and `npm prune --production` in the builder image and copies over all of `/app` to the runtime image, uses `npm start` to run the app in the runtime image.
+# TLS trust (eMudhra/emSign, October 2026)
+
+Starting with 26.12.0 every image runs Node with `NODE_OPTIONS=--use-openssl-ca` against the
+patched Debian `ca-certificates` package (bookworm `>= 20250419~deb12u2`, trixie `>= 20250419+deb13u1`), because the bundled Node root
+store still trusts the compromised emSign intermediates. `/usr/local/lib/trigo/tls-trust-check.mjs`
+fails the base build and, as the first ONBUILD step, every child build if the flag is missing,
+`--use-system-ca`/`--use-bundled-ca` or `NODE_TLS_REJECT_UNAUTHORIZED=0` are set, or the OS store
+or `NODE_EXTRA_CA_CERTS` contain one of the affected keys. Run
+`node /usr/local/lib/trigo/tls-trust-check.mjs --probe` inside a container to verify against the
+advisory's test hosts. Child images must not override `NODE_OPTIONS` without keeping the flag.

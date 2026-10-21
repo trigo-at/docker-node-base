@@ -2,6 +2,27 @@ ARG VERSION
 ARG FLAVOR
 FROM node:$VERSION-$FLAVOR
 
+# Node 26.12.0 still trusts the compromised eMudhra/emSign intermediates (October 2026) through
+# its bundled root store; the Node fix (nodejs/node#66871) is not in any release yet. All images
+# therefore use the patched Debian CA store (bookworm 20250419~deb12u2, trixie
+# 20250419+deb13u1) via --use-openssl-ca. tls-trust-check.mjs verifies
+# this while building the base image and again as the first ONBUILD step of every child image,
+# before any step can reach the network.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && . /etc/os-release \
+    && case "$VERSION_ID" in \
+         12) min=20250419~deb12u2 ;; \
+         13) min=20250419+deb13u1 ;; \
+         *) echo "unsupported Debian release $VERSION_ID: no known remediated ca-certificates version" >&2; exit 1 ;; \
+       esac \
+    && dpkg --compare-versions "$(dpkg-query --show --showformat='${Version}' ca-certificates)" ge "$min" \
+    && rm -rf /var/lib/apt/lists/*
+ENV NODE_OPTIONS=--use-openssl-ca
+ADD tls-trust-check.mjs /usr/local/lib/trigo/tls-trust-check.mjs
+RUN node /usr/local/lib/trigo/tls-trust-check.mjs
+ONBUILD RUN node /usr/local/lib/trigo/tls-trust-check.mjs
+
 ONBUILD ARG NPM_TOKEN
 ADD npmrc /root/.npmrc
 ADD npmrc /app/.npmrc
